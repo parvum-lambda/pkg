@@ -1,0 +1,32 @@
+version: 2.1
+
+jobs:
+  release-version:
+    docker:
+      - image: cimg/node:18.12
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "f5:41:b7:cf:99:0e:1e:39:d7:de:dd:2a:1a:76:7d:74"
+      - run:
+          shell: "/bin/bash"
+          name: "Install dependencies"
+          command: "yarn --frozen-lockfile"
+      - run:
+          shell: "/bin/bash"
+          name: "Launch version"
+          command: |
+            export GITHUB_TOKEN="$GITHUB_TOKEN"
+            npx semantic-release
+
+workflows:
+  release-version-workflow:
+    jobs:
+      - release-version:
+          context:
+            - gh-parvum
+          filters:
+            branches:
+              only: /main|beta|alpha/
+

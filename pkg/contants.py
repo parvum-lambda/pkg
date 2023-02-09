@@ -1,10 +1,11 @@
 import os
+import re
 from pkg.helpers import run_read_sync
 from hashlib import md5
 
 GH_DEVICE_LOGIN_URL = "https://github.com/login/device"
 LAMBDA_BASE_REPO = "parvum-lambda"
-LAMBDA_PKG_SERVICE_NAME = run_read_sync("basename -s .git `git config --get remote.origin.url`")
+LAMBDA_PKG_SERVICE_NAME = re.sub(r"\n", "", run_read_sync("basename -s .git `git config --get remote.origin.url`"))
 LAMBDA_PKG_IMAGE_NAME = LAMBDA_PKG_SERVICE_NAME
 LAMBDA_PKG_CONTAINER_NAME = LAMBDA_PKG_SERVICE_NAME
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))

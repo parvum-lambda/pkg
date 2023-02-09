@@ -112,7 +112,8 @@ class ServiceManager:
         return json.loads(lock_file_data)
 
     def __install_from_json(self, json_file_path=None):
-        json_file = open(json_file_path if json_file_path is not None else self.JSON_FILE_PATH, "r")
+        sub_dependency = json_file_path is not None
+        json_file = open(json_file_path if sub_dependency else self.JSON_FILE_PATH, "r")
         json_file_data = json_file.read()
         json_file.close()
 
@@ -140,8 +141,9 @@ class ServiceManager:
         for service in services_releases:
             self.__check_and_run_service_files(service)
 
-        self.__format_json_file(services_releases)
-        self.__format_lock_file(services_releases)
+        if not sub_dependency:
+            self.__format_json_file(services_releases)
+            self.__format_lock_file(services_releases)
 
         for service in services_releases:
             self.__print_warns(service)

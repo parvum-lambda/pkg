@@ -142,7 +142,6 @@ class ServiceManager:
             self.__check_and_run_service_files(service)
 
         if not sub_dependency:
-            self.__format_json_file(services_releases)
             self.__format_lock_file(services_releases)
 
         for service in services_releases:

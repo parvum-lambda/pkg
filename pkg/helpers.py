@@ -10,13 +10,13 @@ FORMATS = {
     '!c': '[32m',  # green
     '!y': '[33m',  # yellow
     '!b': '[34m',  # blue
-    '!m': '[35m',  # blue
-    '!cy': '[36m'  # blue
+    '!m': '[35m',  # magenta
+    '!cy': '[36m'  # cyan
 }
 
 
-def formatex(input):
-    output = input + '!R'
+def formatex(_input):
+    output = _input + '!R'
     for format_key in FORMATS:
         output = output.replace(format_key, PREFIX + FORMATS[format_key])
 

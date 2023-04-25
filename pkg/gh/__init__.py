@@ -63,6 +63,15 @@ class GH:
 
         return response.json()
 
+    def get_release(self, repo, tag):
+        response = requests.get(self.base_url + '/repos/' + self.org + '/' + repo + '/releases/' + tag,
+                                headers=self.base_headers)
+
+        if response.status_code > requests.codes.ok:
+            raise GHRequestError("Error getting latest release", response.json()['message'], response.status_code)
+
+        return response.json()
+
     def get_latest_release(self, repo):
         response = requests.get(self.base_url + '/repos/' + self.org + '/' + repo + '/releases/latest',
                                 headers=self.base_headers)
@@ -86,6 +95,50 @@ class GH:
             headers = {}
 
         return requests.request(method, url, headers=headers | self.base_headers)
+
+    def get_files(self, repo, ref="main"):
+        response = requests.get(self.base_url + '/repos/' + self.org + '/' + repo + '/contents',
+                                headers=self.base_headers,
+                                params={
+                                    "ref": ref
+                                })
+
+        if response.status_code > requests.codes.ok:
+            raise GHRequestError("Error getting file", response.json()['message'], response.status_code)
+
+        return response.json()
+
+    def get_file(self, repo, file_name, ref="main"):
+        response = requests.get(self.base_url + '/repos/' + self.org + '/' + repo + '/contents/' + file_name,
+                                headers=self.base_headers,
+                                params={
+                                    "ref": ref
+                                })
+
+        if response.status_code > requests.codes.ok:
+            raise GHRequestError("Error getting file", response.json()['message'], response.status_code)
+
+        return response.json()
+
+    def get_blob(self, url):
+        headers = self.base_headers.copy()
+        headers["Accept"] = "application/vnd.github.v4.raw"
+        response = requests.get(url, headers=headers)
+
+        if response.status_code > requests.codes.ok:
+            raise GHRequestError("Error getting file", response.json()['message'], response.status_code)
+
+        return response.content.decode()
+
+    def get_asset(self, url):
+        headers = self.base_headers.copy()
+        headers["Accept"] = "application/octet-stream"
+        response = requests.get(url, headers=headers)
+
+        if response.status_code > requests.codes.ok:
+            raise GHRequestError("Error getting file", response.json()['message'], response.status_code)
+
+        return response.content.decode()
 
 
 class GHConfigError(BaseException):

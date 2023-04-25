@@ -5,6 +5,8 @@ import subprocess
 from pkg.contants import GH_DEVICE_LOGIN_URL, LAMBDA_PKG_IMAGE_NAME, LAMBDA_PKG_CONTAINER_NAME, WORK_DIR, \
     WORK_DIR_HASH, SUBNET_CACHE_FILE, NETWORK_NAME, NETWORK_SUBNET
 from pkg.gh import GH, GHConfigError, GHInvalidToken
+from pkg.helpers import run_read_sync
+from ipaddress import IPv4Network
 
 
 def get_image_hash():
@@ -20,13 +22,13 @@ def get_container_hash():
 
 
 def get_network_hash():
-    result = subprocess.run(['docker', 'network', 'ls', '-f="' + NETWORK_NAME + '"', '-q'], capture_output=True,
+    result = subprocess.run(['docker', 'network', 'ls', '-f', 'name=' + NETWORK_NAME, '-q'], capture_output=True,
                             text=True)
     return re.sub('\r?\n', '', result.stdout)
 
 
 def network_exists():
-    return get_image_hash() != ''
+    return get_network_hash() != ''
 
 
 def image_exists():
@@ -61,6 +63,10 @@ def get_network_subnet():
 
     for subnet_cache_raw in subnet_cache_lines:
         subnet_cache_raw_trimmed = re.sub(r'\n', '', subnet_cache_raw)
+
+        if len(subnet_cache_raw_trimmed) == 0:
+            continue
+
         subnet_cache_match = re.match(r'^([^=]+)=([^=]+)$', subnet_cache_raw_trimmed)
         subnet_map[subnet_cache_match.group(1)] = subnet_cache_match.group(2)
 
@@ -152,6 +158,20 @@ def setup(force):
         print("No action required")
     except GHConfigError or GHInvalidToken:
         get_gh_credentials()
+
+
+def run_compose(compose_file, envs=None):
+    run_read_sync('docker-compose -f ' + compose_file + ' up -d', env_vars=envs)
+
+
+def shutdown_compose(compose_file, envs=None):
+    run_read_sync('docker-compose -f ' + compose_file + ' down', env_vars=envs)
+
+
+def get_available_ip(subnet):
+    network = IPv4Network(subnet)
+
+    return network.hosts()
 
 
 class NetworkSubnetGenerateError(BaseException):

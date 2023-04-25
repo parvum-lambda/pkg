@@ -1,11 +1,13 @@
 import os
 import re
-from pkg.helpers import run_read_sync
 from hashlib import md5
+from pkg.helpers import run_read_sync
 
 GH_DEVICE_LOGIN_URL = "https://github.com/login/device"
 LAMBDA_BASE_REPO = "parvum-lambda"
-LAMBDA_PKG_SERVICE_NAME = re.sub(r"\n", "", run_read_sync("basename -s .git `git config --get remote.origin.url`"))
+LATEST_RELEASE_IDENTIFIER = 'latest'
+LAMBDA_SERVICE_NAME = re.sub(r"\n", "", run_read_sync("basename -s .git `git config --get remote.origin.url`"))
+LAMBDA_PKG_SERVICE_NAME = "pkg"
 LAMBDA_PKG_IMAGE_NAME = LAMBDA_PKG_SERVICE_NAME
 LAMBDA_PKG_CONTAINER_NAME = LAMBDA_PKG_SERVICE_NAME
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -16,3 +18,13 @@ NETWORK_NAME = "parvum-lambda-" + WORK_DIR_HASH
 NETWORK_SUBNET_IP = "128.0.0.0"
 NETWORK_CIDR = "24"
 NETWORK_SUBNET = NETWORK_SUBNET_IP + "/" + NETWORK_CIDR
+PARVUM_JSON_FILE = 'parvum.json'
+PARVUM_LOCK_FILE = 'parvum.lock'
+DEFAULT_PARVUM_LOCAL_PATH = '.parvum'
+DEFAULT_SERVICES_PATH = os.path.join(WORK_DIR, DEFAULT_PARVUM_LOCAL_PATH, 'services')
+SERVICE_COMPOSE_FILE = 'docker-compose.yml'
+DEFAULT_SERVICE_COMPOSE_FILE = 'docker-compose.parvum.yml'
+DEFAULT_COMPOSE_FILE_ASSET_LABEL = 'Parvum compose file'
+DOCKERHUB_NAMESPACE = 'kiske'
+JSON_FILE_PATH = os.path.join(WORK_DIR, PARVUM_JSON_FILE)
+LOCK_FILE_PATH = os.path.join(WORK_DIR, PARVUM_LOCK_FILE)

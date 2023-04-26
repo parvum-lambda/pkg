@@ -17,11 +17,8 @@ jobs:
           shell: "/bin/bash"
           name: "Dump version to workspace"
           command: |
-            npx semantic-release --dry-run 2>&1
             SEM_RES="$(npx semantic-release --dry-run 2>&1 | grep -o 'The next release version is .*')"
             NEW_VERSION=${SEM_RES:27}
-            echo $SEM_RES
-            echo $NEW_VERSION
             
             if [ -z $NEW_VERSION ]; then
               echo "No new version about to be released, stopping..."
@@ -62,10 +59,7 @@ jobs:
       - run:
           shell: "/bin/bash"
           name: "Set version in the config file"
-          command: |
-            echo $NEW_VERSION
-            ls
-            sed -i "" "s/version = .*/version = $NEW_VERSION/" setup.cfg
+          command: "sed -i \"\" \"s/version = .*/version = $NEW_VERSION/\" setup.cfg"
       - run:
           shell: "/bin/bash"
           name: "Build"

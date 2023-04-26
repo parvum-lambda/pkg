@@ -109,10 +109,14 @@ workflows:
           filters:
             branches:
               only: /main|beta|alpha/
+          requires:
+            - check-new-version
       - release-version:
           context:
             - gh-parvum
           filters:
             branches:
               only: /main|beta|alpha/
+          requires:
+            - build
 

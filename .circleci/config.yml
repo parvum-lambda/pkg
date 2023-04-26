@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  release-version:
+  check-new-version:
     docker:
       - image: cimg/node:18.12
     steps:
@@ -15,14 +15,100 @@ jobs:
           command: "yarn --frozen-lockfile"
       - run:
           shell: "/bin/bash"
+          name: "Dump version to workspace"
+          command: |
+            SEM_RES="$(semantic-release --dry-run 2>&1 | grep -o 'The next release version is .*')"
+            NEW_VERSION=${SEM_RES:27}
+            
+            if [ -z $NEW_VERSION ]; then
+              echo "No new version about to be released, stopping..."
+              circleci-agent step halt
+            fi
+            
+            mkdir -p semantic-release-workspace
+            echo $NEW_VERSION > semantic-release-workspace/new-version
+      - persist_to_workspace:
+          root: semantic-release-workspace
+          paths:
+            - new-version
+  build:
+    docker:
+      - image: cimg/python:3.11.3
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /tmp/semantic-release-workspace
+      - run:
+          name: "Setup custom environment variables"
+          command: echo 'export NEW_VERSION=$(cat /tmp/semantic-release-workspace/new-version)' >> "$BASH_ENV"
+      - run:
+          shell: "/bin/bash"
+          name: "Create python venv"
+          command: "python -m venv env && source ./env/bin/activate"
+      - run:
+          shell: "/bin/bash"
+          name: "Install build tools"
+          command: "python -m pip install -U pip wheel setuptools"
+      - run:
+          shell: "/bin/bash"
+          name: "Install project requirements"
+          command: "python -m pip install -r requirements.txt"
+      - run:
+          shell: "/bin/bash"
+          name: "Set version in the config file"
+          command: "sed -i \"\" \"s/version = .*/version = $NEW_VERSION/\" setup.cfg"
+      - run:
+          shell: "/bin/bash"
+          name: "Build"
+          command: "python setup.py bdist_wheel"
+      - run:
+          shell: "/bin/bash"
+          name: "Dump build to workspace"
+          command: |
+            mkdir -p build-workspace
+            DIST_FILE=$(ls dist | tail -1)
+            cp dist/$DIST_FILE build-workspace/build.whl
+      - persist_to_workspace:
+          root: build-workspace
+          paths:
+            - new-version
+  release-version:
+    docker:
+      - image: cimg/node:18.12
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "f5:41:b7:cf:99:0e:1e:39:d7:de:dd:2a:1a:76:7d:74"
+      - attach_workspace:
+          at: /tmp/build-workspace
+      - run:
+          shell: "/bin/bash"
+          name: "Install dependencies"
+          command: "yarn --frozen-lockfile"
+      - run:
+          shell: "/bin/bash"
           name: "Launch version"
           command: |
             export GITHUB_TOKEN="$GITHUB_TOKEN"
+            cp /tmp/build-workspace/build.whl ./build.whl
             npx semantic-release
 
 workflows:
   release-version-workflow:
     jobs:
+      - check-new-version:
+          context:
+            - gh-parvum
+          filters:
+            branches:
+              only: /main|beta|alpha/
+      - build:
+          context:
+            - gh-parvum
+          filters:
+            branches:
+              only: /main|beta|alpha/
       - release-version:
           context:
             - gh-parvum

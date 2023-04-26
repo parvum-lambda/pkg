@@ -25,8 +25,8 @@
       {
         "assets": [
           {
-            "path": ".parvum/docker-compose.yml",
-            "label": "Parvum compose file"
+            "path": "bundle.whl",
+            "label": "Python wheel bundled file"
           }
         ]
       }
@@ -37,7 +37,7 @@
       {
         "assets": [
           "package.json",
-          "setup.cfg",
+          "package.json",
           "CHANGELOG.md"
         ],
         "message": "chore(release): ${nextRelease.version} [skip ci]"

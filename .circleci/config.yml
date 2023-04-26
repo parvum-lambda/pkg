@@ -17,12 +17,15 @@ jobs:
           shell: "/bin/bash"
           name: "Dump version to workspace"
           command: |
+            semantic-release --dry-run 2>&1
             SEM_RES="$(semantic-release --dry-run 2>&1 | grep -o 'The next release version is .*')"
             NEW_VERSION=${SEM_RES:27}
+            echo $SEM_RES
+            echo $NEW_VERSION
             
             if [ -z $NEW_VERSION ]; then
               echo "No new version about to be released, stopping..."
-              circleci-agent step halt
+              exit 1
             fi
             
             mkdir -p semantic-release-workspace

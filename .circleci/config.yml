@@ -64,6 +64,7 @@ jobs:
           name: "Set version in the config file"
           command: |
             echo $NEW_VERSION
+            ls
             sed -i "" "s/version = .*/version = $NEW_VERSION/" setup.cfg
       - run:
           shell: "/bin/bash"

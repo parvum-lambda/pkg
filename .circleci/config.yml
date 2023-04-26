@@ -40,7 +40,10 @@ jobs:
           at: /tmp/semantic-release-workspace
       - run:
           name: "Setup custom environment variables"
-          command: echo 'export NEW_VERSION=$(cat /tmp/semantic-release-workspace/new-version)' >> "$BASH_ENV"
+          command: |
+            echo $(cat /tmp/semantic-release-workspace/new-version)
+            ls /tmp/semantic-release-workspace
+            echo 'export NEW_VERSION=$(cat /tmp/semantic-release-workspace/new-version)' >> "$BASH_ENV"
       - run:
           shell: "/bin/bash"
           name: "Create python venv"
@@ -56,7 +59,9 @@ jobs:
       - run:
           shell: "/bin/bash"
           name: "Set version in the config file"
-          command: "sed -i \"\" \"s/version = .*/version = $NEW_VERSION/\" setup.cfg"
+          command: |
+            echo $NEW_VERSION
+            sed -i "" "s/version = .*/version = $NEW_VERSION/" setup.cfg
       - run:
           shell: "/bin/bash"
           name: "Build"

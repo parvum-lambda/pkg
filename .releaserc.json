@@ -14,12 +14,32 @@
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
-    "@semantic-release/github",
+    [
+      "@semantic-release/npm",
+      {
+        "npmPublish": false
+      }
+    ],
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          {
+            "path": ".parvum/docker-compose.yml",
+            "label": "Parvum compose file"
+          }
+        ]
+      }
+    ],
     "@semantic-release/changelog",
     [
       "@semantic-release/git",
       {
-        "assets": ["CHANGELOG.md"],
+        "assets": [
+          "package.json",
+          "setup.cfg",
+          "CHANGELOG.md"
+        ],
         "message": "chore(release): ${nextRelease.version} [skip ci]"
       }
     ]

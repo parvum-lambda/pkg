@@ -1,5 +1,6 @@
 import json
 import os
+from typing import List
 
 from semantic_version import Version, NpmSpec
 
@@ -107,7 +108,7 @@ class DependencyCache:
             fp.close()
 
     @staticmethod
-    def dump_to_lock(services: list[Service]):
+    def dump_to_lock(services: List[Service]):
         service_dict = {}
 
         for service in services:

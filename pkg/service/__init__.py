@@ -13,7 +13,7 @@ class Service:
         self.__gh = GH(LAMBDA_BASE_REPO)
         self.__name = name
         self.__releases = []
-        self.__release: Release | None = None
+        self.__release: Release or None = None
 
     def name(self):
         return self.__name
@@ -74,7 +74,7 @@ class Service:
 
         return self
 
-    def get_release(self) -> Release | None:
+    def get_release(self) -> Release or None:
         return self.__release
 
     def prune(self):

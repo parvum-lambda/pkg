@@ -1,5 +1,7 @@
 import re
 
+from typing import List
+
 from pkg.contants import LAMBDA_BASE_REPO, LAMBDA_PKG_SERVICE_NAME, LATEST_RELEASE_IDENTIFIER, LAMBDA_SERVICE_NAME
 from pkg.gh import GH
 from pkg.helpers import formatex
@@ -11,7 +13,7 @@ from pkg.service_manager_ex.runner import Runner
 
 class ServiceManagerEx:
     __dependency_stack = DependencyStack()
-    __resolved_dependencies: list[Service] = []
+    __resolved_dependencies: List[Service] = []
 
     def __init__(self):
         self.gh = GH(LAMBDA_BASE_REPO)

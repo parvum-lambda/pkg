@@ -1,3 +1,5 @@
+from typing import Dict
+
 from pkg.contants import LAMBDA_SERVICE_NAME, LAMBDA_BASE_REPO
 from pkg.helpers import formatex
 from pkg.service import Service, ReleaseNotFound, ServiceNotFound
@@ -22,7 +24,7 @@ class DependencyStack:
         })
         self.__release_stack.append(service.get_release().id)
 
-    def force_push_bulk(self, services: dict[str, str]):
+    def force_push_bulk(self, services: Dict[str, str]):
         for service_name in services:
             self.force_push(service_name, services[service_name])
 
@@ -32,7 +34,7 @@ class DependencyStack:
         for dependency_name in dependencies:
             self.push(release.service(), dependency_name, dependencies[dependency_name])
 
-    def push(self, required_by: Service | None, service_name_buffer: str, version: str):
+    def push(self, required_by: Service or None, service_name_buffer: str, version: str):
         service_name = service_name_buffer.lower()
 
         if service_name is LAMBDA_SERVICE_NAME:

@@ -3,9 +3,9 @@ import os.path as path
 import requests
 import yaml
 
-from pkg.contants import BASE_DIR
+from pkg.contants import GH_CACHE_DIR
 
-GH_HOST_FILE = BASE_DIR + '/.data/gh/.config/hosts.yml'
+GH_HOST_FILE = path.join(GH_CACHE_DIR, 'hosts.yml')
 
 
 class GH:
@@ -34,7 +34,7 @@ class GH:
     @staticmethod
     def load_yaml():
         if not path.isfile(GH_HOST_FILE):
-            raise FileNotFoundError
+            return {}
 
         with open(GH_HOST_FILE, 'r') as stream:
             hosts_config = yaml.safe_load(stream)

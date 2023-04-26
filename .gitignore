@@ -2,3 +2,7 @@
 /.vscode
 /node_modules
 subnet_cache.ini
+/build
+/dist
+/env
+/parvum.egg-info

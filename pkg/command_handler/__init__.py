@@ -1,4 +1,4 @@
-from argparse import ArgumentParser, BooleanOptionalAction
+from argparse import ArgumentParser
 import pkg.container as container
 
 from pkg.service_manager_ex import ServiceManagerEx
@@ -9,12 +9,12 @@ class CommandHandler:
     __parsed_args = None
 
     def __init__(self):
-        self.__parser = ArgumentParser()
+        type(self).__parser = ArgumentParser()
 
-        subparser = self.__parser.add_subparsers(dest='command')
+        subparser = type(self).__parser.add_subparsers(dest='command')
 
         install_parser = subparser.add_parser('setup')
-        install_parser.add_argument('-f', '--force', action=BooleanOptionalAction)
+        install_parser.add_argument('-f', '--force')
 
         subparser.add_parser('init')
         subparser.add_parser('ls')
@@ -32,7 +32,7 @@ class CommandHandler:
         service_subparser.add_parser('start')
         service_subparser.add_parser('restart')
 
-        self.__parsed_args = self.__parser.parse_args()
+        type(self).__parsed_args = type(self).__parser.parse_args()
 
     @staticmethod
     def get_parsed_args():

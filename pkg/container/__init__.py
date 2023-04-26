@@ -3,7 +3,7 @@ import re
 import subprocess
 
 from pkg.contants import GH_DEVICE_LOGIN_URL, LAMBDA_PKG_IMAGE_NAME, LAMBDA_PKG_CONTAINER_NAME, WORK_DIR, \
-    WORK_DIR_HASH, SUBNET_CACHE_FILE, NETWORK_NAME, NETWORK_SUBNET
+    WORK_DIR_HASH, SUBNET_CACHE_FILE, NETWORK_NAME, NETWORK_SUBNET, GH_CACHE_DIR
 from pkg.gh import GH, GHConfigError, GHInvalidToken
 from pkg.helpers import run_read_sync
 from ipaddress import IPv4Network
@@ -131,8 +131,7 @@ def start_container():
 
     os.system(
         'docker run -it --rm --name ' + LAMBDA_PKG_CONTAINER_NAME + ' ' +
-        '-v "' + WORK_DIR + '/.data/gh/.config:/root/.config/gh" ' +
-        '-v "' + WORK_DIR + '/.data/gh/.config:/root/.config/gh" ' + LAMBDA_PKG_IMAGE_NAME)
+        '-v "' + GH_CACHE_DIR + ':/root/.config/gh" ' + LAMBDA_PKG_IMAGE_NAME)
 
 
 def get_gh_credentials():

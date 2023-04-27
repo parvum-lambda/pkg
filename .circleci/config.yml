@@ -90,7 +90,9 @@ jobs:
           name: "Launch version"
           command: |
             export GITHUB_TOKEN="$GITHUB_TOKEN"
-            cp /tmp/build-workspace/build.whl ./build.whl
+            cp /tmp/build-workspace/build.whl build.whl
+            ls /tmp/build-workspace
+            ls
             npx semantic-release
 
 workflows:

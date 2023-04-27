@@ -66,11 +66,11 @@ jobs:
           command: |
             mkdir -p build-workspace
             DIST_FILE=$(ls dist | tail -1)
-            cp dist/$DIST_FILE build-workspace/build.whl
+            cp dist/$DIST_FILE build-workspace/bundle.whl
       - persist_to_workspace:
           root: build-workspace
           paths:
-            - build.whl
+            - bundle.whl
   release-version:
     docker:
       - image: cimg/node:18.12
@@ -90,9 +90,7 @@ jobs:
           name: "Launch version"
           command: |
             export GITHUB_TOKEN="$GITHUB_TOKEN"
-            cp /tmp/build-workspace/build.whl build.whl
-            ls /tmp/build-workspace
-            ls
+            cp /tmp/build-workspace/bundle.whl bundle.whl
             npx semantic-release
 
 workflows:

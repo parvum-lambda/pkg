@@ -19,6 +19,13 @@
 
 * circle-ci config ([15121f7](https://github.com/parvum-lambda/pkg/commit/15121f7504685a0d3aa56c81bc3fc2b9f506e45a))
 
+# [1.0.0-alpha.3](https://github.com/parvum-lambda/pkg/compare/v1.0.0-alpha.2...v1.0.0-alpha.3) (2023-04-27)
+
+
+### Bug Fixes
+
+* circle-ci config ([15121f7](https://github.com/parvum-lambda/pkg/commit/15121f7504685a0d3aa56c81bc3fc2b9f506e45a))
+
 # [1.0.0-alpha.2](https://github.com/parvum-lambda/pkg/compare/v1.0.0-alpha.1...v1.0.0-alpha.2) (2023-04-26)
 
 

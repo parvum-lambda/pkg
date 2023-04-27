@@ -92,7 +92,10 @@ jobs:
             export GITHUB_TOKEN="$GITHUB_TOKEN"
             DIST_FILE=$(ls /tmp/build-workspace/bundle | grep .whl)
             cp /tmp/build-workspace/bundle/$DIST_FILE $DIST_FILE
+            ls
+            cat ./.releaserc.json
             node -e "json = require('./.releaserc.json'), json.plugins[3][1].assets.path = '$DIST_FILE', require('fs').writeFileSync('./.releaserc.json' , JSON.stringify(json))"
+            cat ./.releaserc.json
             npx semantic-release
 
 workflows:

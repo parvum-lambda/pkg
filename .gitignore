@@ -5,4 +5,4 @@ subnet_cache.ini
 /build
 /dist
 /env
-/parvum.egg-info
+/*.egg-info

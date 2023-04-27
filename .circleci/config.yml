@@ -70,7 +70,7 @@ jobs:
       - persist_to_workspace:
           root: build-workspace
           paths:
-            - new-version
+            - build.whl
   release-version:
     docker:
       - image: cimg/node:18.12

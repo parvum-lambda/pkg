@@ -90,7 +90,7 @@ jobs:
           name: "Launch version"
           command: |
             export GITHUB_TOKEN="$GITHUB_TOKEN"
-            DIST_FILE=$(ls /tmp/bundle/build-workspace | grep .whl)
+            DIST_FILE=$(ls /tmp/build-workspace/bundle | grep .whl)
             cp /tmp/build-workspace/bundle/$DIST_FILE $DIST_FILE
             node -e "json = require('./.releaserc.json'), json.plugins[3][1].assets.path = '$DIST_FILE', require('fs').writeFileSync('./.releaserc.json' , JSON.stringify(json))"
             npx semantic-release

@@ -64,16 +64,13 @@ jobs:
           shell: "/bin/bash"
           name: "Dump build to workspace"
           command: |
-            mkdir -p build-workspace
+            mkdir -p build-workspace/bundle
             DIST_FILE=$(ls dist | grep .whl)
-            ls dist
-            ls dist | grep .whl
-            echo $DIST_FILE
-            cp dist/$DIST_FILE build-workspace/$DIST_FILE
+            cp dist/$DIST_FILE build-workspace/bundle/$DIST_FILE
       - persist_to_workspace:
           root: build-workspace
           paths:
-            - bundle.whl
+            - bundle
   release-version:
     docker:
       - image: cimg/node:18.12
@@ -93,8 +90,8 @@ jobs:
           name: "Launch version"
           command: |
             export GITHUB_TOKEN="$GITHUB_TOKEN"
-            DIST_FILE=$(ls /tmp/build-workspace | grep .whl)
-            cp /tmp/build-workspace/$DIST_FILE $DIST_FILE
+            DIST_FILE=$(ls /tmp/bundle/build-workspace | grep .whl)
+            cp /tmp/build-workspace/bundle/$DIST_FILE $DIST_FILE
             node -e "json = require('./.releaserc.json'), json.plugins[3][1].assets.path = '$DIST_FILE', require('fs').writeFileSync('./.releaserc.json' , JSON.stringify(json))"
             npx semantic-release
 

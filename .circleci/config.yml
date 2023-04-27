@@ -58,10 +58,6 @@ jobs:
           command: "python -m pip install -r requirements.txt"
       - run:
           shell: "/bin/bash"
-          name: "Set version in the config file"
-          command: "sed -i \"\" \"s/version = .*/version = $NEW_VERSION/\" setup.cfg"
-      - run:
-          shell: "/bin/bash"
           name: "Build"
           command: "python setup.py bdist_wheel"
       - run:

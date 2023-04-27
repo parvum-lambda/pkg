@@ -65,8 +65,8 @@ jobs:
           name: "Dump build to workspace"
           command: |
             mkdir -p build-workspace
-            DIST_FILE=$(ls dist | tail -1)
-            cp dist/$DIST_FILE build-workspace/bundle.whl
+            DIST_FILE=$(ls dist | grep .whl)
+            cp dist/$DIST_FILE build-workspace/
       - persist_to_workspace:
           root: build-workspace
           paths:
@@ -90,7 +90,9 @@ jobs:
           name: "Launch version"
           command: |
             export GITHUB_TOKEN="$GITHUB_TOKEN"
-            cp /tmp/build-workspace/bundle.whl bundle.whl
+            DIST_FILE=$(ls /tmp/build-workspace | grep .whl)
+            cp /tmp/build-workspace/$DIST_FILE $DIST_FILE
+            node -e "json = require('./.releaserc.json'), json.plugins[3][1].assets.path = '$DIST_FILE', require('fs').writeFileSync('./.releaserc.json' , JSON.stringify(json))"
             npx semantic-release
 
 workflows:

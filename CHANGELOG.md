@@ -1,3 +1,10 @@
+# [1.0.0-alpha.5](https://github.com/parvum-lambda/pkg/compare/v1.0.0-alpha.4...v1.0.0-alpha.5) (2023-05-03)
+
+
+### Bug Fixes
+
+* not updating already installed services ([6acd15a](https://github.com/parvum-lambda/pkg/commit/6acd15a73c284e739e53a70eb8ed1005b99014b2))
+
 # [1.0.0-alpha.4](https://github.com/parvum-lambda/pkg/compare/v1.0.0-alpha.3...v1.0.0-alpha.4) (2023-05-03)
 
 

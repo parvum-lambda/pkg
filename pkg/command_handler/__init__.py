@@ -14,7 +14,8 @@ class CommandHandler:
         subparser = type(self).__parser.add_subparsers(dest='command')
 
         install_parser = subparser.add_parser('setup')
-        install_parser.add_argument('-f', '--force')
+        install_parser.add_argument('-f', '--force', action='store_true')
+        install_parser.set_defaults(force=False)
 
         subparser.add_parser('init')
         subparser.add_parser('ls')

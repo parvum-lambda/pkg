@@ -2,7 +2,7 @@ import os
 import re
 import subprocess
 
-from pkg.contants import GH_DEVICE_LOGIN_URL, LAMBDA_PKG_IMAGE_NAME, LAMBDA_PKG_CONTAINER_NAME, WORK_DIR, \
+from pkg.contants import GH_DEVICE_LOGIN_URL, LAMBDA_PKG_IMAGE_NAME, LAMBDA_PKG_CONTAINER_NAME, \
     WORK_DIR_HASH, SUBNET_CACHE_FILE, NETWORK_NAME, NETWORK_SUBNET, GH_CACHE_DIR
 from pkg.gh import GH, GHConfigError, GHInvalidToken
 from pkg.helpers import run_read_sync
@@ -31,10 +31,6 @@ def network_exists():
     return get_network_hash() != ''
 
 
-def image_exists():
-    return get_image_hash() != ''
-
-
 def container_exists():
     return get_container_hash() != ''
 
@@ -45,10 +41,6 @@ def remove_container():
 
 def remove_image():
     subprocess.run(['docker', 'image', 'rm', get_image_hash()], capture_output=True, text=True)
-
-
-def build_image():
-    os.system('docker build --tag ' + LAMBDA_PKG_IMAGE_NAME + ' ' + WORK_DIR)
 
 
 def get_network_subnet():
@@ -121,10 +113,6 @@ def get_browser_command():
 
 
 def start_container():
-    if not image_exists():
-        print("Image not found, use init instead")
-        return
-
     if container_exists():
         print("Container already running")
         return
@@ -135,9 +123,6 @@ def start_container():
 
 
 def get_gh_credentials():
-    if not image_exists():
-        build_image()
-
     if container_exists():
         remove_container()
 

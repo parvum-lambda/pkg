@@ -1,3 +1,10 @@
+# [1.0.0-alpha.4](https://github.com/parvum-lambda/pkg/compare/v1.0.0-alpha.3...v1.0.0-alpha.4) (2023-05-03)
+
+
+### Features
+
+* added image on dockerhub to gh token generation image ([e828bb5](https://github.com/parvum-lambda/pkg/commit/e828bb50cb661d5f477cd6d18b6278e5514b4ae4))
+
 # [1.0.0-alpha.3](https://github.com/parvum-lambda/pkg/compare/v1.0.0-alpha.2...v1.0.0-alpha.3) (2023-04-28)
 
 

@@ -63,7 +63,7 @@ class DependencyStack:
                     required_by_key: version
                 }
             })
-        elif required_by_key not in self.__stack_buffer[service_name]:
+        else:
             self.__stack_buffer[service_name].update({
                 required_by_key: version
             })

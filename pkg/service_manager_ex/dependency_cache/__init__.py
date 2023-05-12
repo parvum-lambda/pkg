@@ -88,6 +88,21 @@ class DependencyCache:
         if "services" not in json_file:
             json_file["services"] = {}
 
+        should_remove = []
+
+        for service_name in services:
+            version = services[service_name]
+
+            if version is None:
+                if service_name in json_file["services"]:
+                    should_remove.append(service_name)
+
+        for service_name in should_remove:
+            del services[service_name]
+
+            if service_name in json_file["services"]:
+                del json_file["services"][service_name]
+
         for service_name in services:
             version = services[service_name]
 

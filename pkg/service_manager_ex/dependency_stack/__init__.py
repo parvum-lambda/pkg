@@ -12,17 +12,16 @@ class DependencyStack:
         self.__stack_buffer = {}
         self.__release_stack = []
 
-        pass
-
     def force_push(self, service_name: str, version: str):
         service = Service(service_name).match_release(version)
 
-        self.__stack_buffer.update({
-            service_name: {
-                LAMBDA_SERVICE_NAME + '(self)': version
-            }
-        })
+        if service_name not in self.__stack_buffer:
+            self.__stack_buffer[service_name] = {}
+
+        self.__stack_buffer[service_name][LAMBDA_SERVICE_NAME + '(self)'] = version
         self.__release_stack.append(service.get_release().id)
+
+        self.push_from_release(service.get_release())
 
     def force_push_bulk(self, services: Dict[str, str]):
         for service_name in services:
@@ -58,15 +57,9 @@ class DependencyStack:
             exit(1)
 
         if service_name not in self.__stack_buffer:
-            self.__stack_buffer.update({
-                service_name: {
-                    required_by_key: version
-                }
-            })
-        else:
-            self.__stack_buffer[service_name].update({
-                required_by_key: version
-            })
+            self.__stack_buffer[service_name] = {}
+
+        self.__stack_buffer[service_name][required_by_key] = version
 
         release_id = service.get_release().id()
 
@@ -76,6 +69,9 @@ class DependencyStack:
         self.__release_stack.append(release_id)
 
         self.push_from_release(service.get_release())
+
+    def stack_buffer(self):
+        return self.__stack_buffer
 
     def resolve_stack(self):
         resolved_stack = []
@@ -98,3 +94,15 @@ class DependencyStack:
                 return None
 
         return resolved_stack
+
+    def remove(self, service: str):
+        should_remove = []
+        for dependent in self.__stack_buffer[service]:
+            if not dependent.endswith('(self)'):
+                continue
+
+            should_remove.append(dependent)
+
+        for dependent in should_remove:
+            del self.__stack_buffer[service][dependent]
+

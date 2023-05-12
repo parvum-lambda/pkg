@@ -26,6 +26,9 @@ class CommandHandler:
         require_parser = subparser.add_parser('require')
         require_parser.add_argument('service', nargs='+')
 
+        require_parser = subparser.add_parser('remove')
+        require_parser.add_argument('service', nargs=1)
+
         service_parser = subparser.add_parser('service')
         service_subparser = service_parser.add_subparsers(dest='service_command')
         service_subparser.add_parser('ls')
@@ -62,3 +65,7 @@ class CommandHandler:
     @staticmethod
     def require():
         ServiceManagerEx().require_services(CommandHandler.__parsed_args.service)
+
+    @staticmethod
+    def remove():
+        ServiceManagerEx().remove_service(CommandHandler.__parsed_args.service)

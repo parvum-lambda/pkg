@@ -71,6 +71,18 @@ class ServiceManagerEx:
 
         Runner.run()
 
+    def remove_service(self, services):
+        Runner.stop()
+        self.__update()
+
+        service = services[0]
+        self.__dependency_stack.remove(service)
+
+        DependencyCache.dump_to_json(DependencyCache.update_service_versions_dict({service: None}))
+        DependencyCache.dump_to_lock(self.__dependency_stack.resolve_stack())
+
+        self.__update()
+
     def start(self):
         Runner.run()
 

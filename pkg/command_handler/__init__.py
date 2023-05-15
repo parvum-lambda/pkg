@@ -1,5 +1,7 @@
 from argparse import ArgumentParser
 import pkg.container as container
+from pkg.contants import GIT_ENVIRONMENT
+from pkg.helpers import formatex
 
 from pkg.service_manager_ex import ServiceManagerEx
 
@@ -47,7 +49,14 @@ class CommandHandler:
         container.setup(CommandHandler.__parsed_args.force)
 
     @staticmethod
+    def __check_git_environment():
+        if GIT_ENVIRONMENT is False:
+            print(formatex('!rYou are not in a git environment!'))
+            exit(1)
+
+    @staticmethod
     def install():
+        CommandHandler.__check_git_environment()
         ServiceManagerEx().install()
 
     @staticmethod
@@ -64,8 +73,10 @@ class CommandHandler:
 
     @staticmethod
     def require():
+        CommandHandler.__check_git_environment()
         ServiceManagerEx().require_services(CommandHandler.__parsed_args.service)
 
     @staticmethod
     def remove():
+        CommandHandler.__check_git_environment()
         ServiceManagerEx().remove_service(CommandHandler.__parsed_args.service)

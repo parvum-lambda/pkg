@@ -6,7 +6,13 @@ from pkg.helpers import run_read_sync
 GH_DEVICE_LOGIN_URL = "https://github.com/login/device"
 LAMBDA_BASE_REPO = "parvum-lambda"
 LATEST_RELEASE_IDENTIFIER = "latest"
-LAMBDA_SERVICE_NAME = re.sub(r"\n", "", run_read_sync("basename -s .git `git config --get remote.origin.url`"))
+try:
+    LAMBDA_SERVICE_NAME = re.sub(r"\n", "", run_read_sync("basename -s .git `git config --get remote.origin.url`"))
+    GIT_ENVIRONMENT = True
+except:
+    GIT_ENVIRONMENT = False
+    LAMBDA_SERVICE_NAME = None
+
 LAMBDA_PKG_SERVICE_NAME = "pkg"
 DOCKERHUB_NAMESPACE = "kiske"
 DOCKER_IMAGE_TAG = "1.0.0"

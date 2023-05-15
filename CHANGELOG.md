@@ -1,3 +1,10 @@
+# [1.0.0-alpha.6](https://github.com/parvum-lambda/pkg/compare/v1.0.0-alpha.5...v1.0.0-alpha.6) (2023-05-12)
+
+
+### Features
+
+* remove service dependency ([0ea6ff8](https://github.com/parvum-lambda/pkg/commit/0ea6ff834c3043d8ab9cbdbfc7925887e20c97b6))
+
 # [1.0.0-alpha.5](https://github.com/parvum-lambda/pkg/compare/v1.0.0-alpha.4...v1.0.0-alpha.5) (2023-05-03)
 
 

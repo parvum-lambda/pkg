@@ -1,3 +1,10 @@
+# [1.0.0-alpha.7](https://github.com/parvum-lambda/pkg/compare/v1.0.0-alpha.6...v1.0.0-alpha.7) (2023-05-15)
+
+
+### Features
+
+* graceful checking if command is being executed in a git environment ([794d7ce](https://github.com/parvum-lambda/pkg/commit/794d7ce5a679d00f6cb675e0bb219920255835b2))
+
 # [1.0.0-alpha.6](https://github.com/parvum-lambda/pkg/compare/v1.0.0-alpha.5...v1.0.0-alpha.6) (2023-05-12)
 
 

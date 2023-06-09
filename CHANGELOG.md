@@ -1,3 +1,10 @@
+# [1.0.0-alpha.8](https://github.com/parvum-lambda/pkg/compare/v1.0.0-alpha.7...v1.0.0-alpha.8) (2023-06-09)
+
+
+### Features
+
+* error output from compose up command ([abaaa23](https://github.com/parvum-lambda/pkg/commit/abaaa23277b0ce322da495d6a23bbf7bb88170a6))
+
 # [1.0.0-alpha.7](https://github.com/parvum-lambda/pkg/compare/v1.0.0-alpha.6...v1.0.0-alpha.7) (2023-05-15)
 
 

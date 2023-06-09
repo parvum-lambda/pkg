@@ -51,7 +51,7 @@ class DependencyStack:
             exit(1)
         except ReleaseNotFound as release_not_found:
             print(formatex(
-                '!BService not found!R' + LAMBDA_BASE_REPO + '/!B' + release_not_found.service_name +
+                '!BService not found !R' + LAMBDA_BASE_REPO + '/!B' + release_not_found.service_name +
                 '@' + release_not_found.version_constraint
             ))
             exit(1)

@@ -86,6 +86,7 @@ class Runner:
                 continue
 
             compose_envs_service = compose_envs.copy()
+            compose_envs_service["PARVUM_SERVICE_NAME"] = service_name
             compose_envs_service["PARVUM_IPV4_ADDRESS"] = service_ip_map[service_name]
 
             if service is not None:

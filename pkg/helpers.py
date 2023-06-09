@@ -29,4 +29,8 @@ def run_read_sync(cmd, env_vars=None):
     if env_vars is not None:
         env.update(env_vars)
 
-    return subprocess.check_output(['bash', '-c', cmd], env=env, stderr=subprocess.STDOUT).decode('utf8')
+    try:
+        return subprocess.check_output(['bash', '-c', cmd], env=env, stderr=subprocess.STDOUT).decode('utf8')
+    except subprocess.CalledProcessError as e:
+        print(formatex('!r' + e.output.decode() + '!R'))
+        exit(1)
